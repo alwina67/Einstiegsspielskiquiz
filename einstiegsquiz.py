@@ -176,7 +176,7 @@ while nochmal_spielen.lower() == "ja":
     elif punkte ==6:
         print("\nBeim nächsten mal klappt es bestimmt!")
     elif punkte == 5:
-        print("S\nchön mittig! Aber schaffst du die 5 auch mal 2?")
+        print("\nSchön mittig! Aber schaffst du die 5 auch mal 2?")
     elif punkte == 4:
         print("\nLass deinen Kopf nicht hängen und versuch es erneut!")
     elif punkte == 3:
