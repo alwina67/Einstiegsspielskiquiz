@@ -1,5 +1,5 @@
+import random
 
-#Liste an Fragen
 fragen_liste = [
     {
         "frage": "Was ist der höchste Punkt im Skigebiet Großglockner-Heiligenblut?",
@@ -121,76 +121,139 @@ fragen_liste = [
         "Antwort": "a",
         "ID" : "20"
     }
-]
+    ]  
 
-import random
+# ------------------------
+# SPIEL START
+# ------------------------
 
-name = input("Gib deinen Spielernamen ein: ")
-print("Hallo " + name +  "! Willkommen beim Skigebiet-Quiz! Dir werden nacheinander 10 Fragen zum Thema Skigebiete gezeigt und du hast 4 Auswahlmöglichkeiten. Bei einer richtigen Anwtort erhältst du einen Punkt")
+name1 = input("Gib deinen Spielernamen ein: ")
 
+modus = input("Alleine oder zu zweit spielen? (alleine/zu zweit): ").lower().strip()
+
+ist_zweier = False
+
+if modus == "zu zweit":
+    ist_zweier = True
+    name2 = input("Name von Spieler 2: ")
+    print("Willkommen " + name1 + " und " + name2 + " beim Skigebiet-Quiz!")
+else:
+    print("Willkommen " + name1 + " beim Skigebiet-Quiz!")
+
+letzte_punkte = None
 nochmal_spielen = "ja"
-letzte_punkte= None
 
-#Schleife des Spiels
+# ------------------------
+# HAUPTSCHLEIFE
+# ------------------------
 
-while nochmal_spielen.lower() == "ja":
+while nochmal_spielen == "ja":
 
-    punkte = 0
-    auswahl = random.sample(fragen_liste, 10)
-    
-    for fragedict in auswahl:
-        print("\n" + fragedict["frage"])
+    punkte1 = 0
+    punkte2 = 0
 
-        for option in fragedict["Optionen"]:
+    fragen = random.sample(fragen_liste, 10)
+
+    # ------------------------
+    # FRAGEN DURCHLAUF
+    # ------------------------
+
+    for frage in fragen:
+        print("\n" + frage["frage"])
+
+        for option in frage["Optionen"]:
             print(option)
 
-        antwort = input("Deine Antwort (a/b/c/d): ").lower()
+        # Spieler 1
+        if not ist_zweier:
+            antwort1 = input(name1 + " Antwort (a/b/c/d): ").lower().strip()
 
-        if antwort == fragedict["Antwort"]:
-            print("Richtig!")
-            punkte += 1
-        else:
-            print("Falsch!")
-
-#Punktzahl und Vergleich mit letzter Runde
-
-    print("\nDu hast", punkte, "von 10 Punkten erreicht!")
-    if letzte_punkte is not None:
-        if punkte> letzte_punkte:
-            print("\nSuper! Du hast dich verbessert!")
-        elif punkte<letzte_punkte:
-            print("\nSchade, diesmal war es schlechter, versuch es einfach nochmal!")
-        else:
-            print("\nGleiche Punktzahl wie vorher! Sehr gut!")
-    
+            if antwort1 == frage["Antwort"]:
+                print("Richtig!")
+                punkte1 += 1
+            else:
+                print("Falsch!")
         
-#Motivationsprüche
-    if punkte == 10:
-        print("\nDu scheinst ein richtiger Experte zu sein! Schaffst du das auch ein zweites Mal?")
-    elif punkte== 9:
-        print("\nDas war knapp!Schaffst du beim nächsten Mal die volle Punktzahl?")
-    elif punkte== 8:
-        print("\nDie zwei Punkte kriegst du noch! Versuch es ein weiteres Mal!")
-    elif punkte == 7:
-        print("\nNur durch erneutes Versuchen kannst du es schaffen!")
-    elif punkte ==6:
-        print("\nBeim nächsten mal klappt es bestimmt!")
-    elif punkte == 5:
-        print("\nSchön mittig! Aber schaffst du die 5 auch mal 2?")
-    elif punkte == 4:
-        print("\nLass deinen Kopf nicht hängen und versuch es erneut!")
-    elif punkte == 3:
-        print("\nBeim nächsten mal schaffst du es bestimmt!")
-    elif punkte == 2:
-        print("\nGlaub an dich und versuche es nochmal!")
-    elif punkte == 1:
-        print("\nZumindest 1 Punkt. Schaffst du aber auch 2?")
-    elif punkte == 0:
-        print("\nMacht nichts, versuch es erneut!")
 
-    letzte_punkte=punkte
+        # Spieler 2
+        if ist_zweier:
 
-#Nochmal spielen Abfrage
+            antwort1 = input(name1 + " Antwort (a/b/c/d): ").lower().strip()
 
-    nochmal_spielen = input("\nMöchtest du nochmal spielen? (ja/nein): ")
-    
+            if antwort1 == frage["Antwort"]:
+                punkte1 += 1
+       
+            antwort2 = input(name2 + " Antwort (a/b/c/d): ").lower().strip()
+
+            if antwort2 == frage["Antwort"]:
+                punkte2 += 1
+        print("Die richtige Antwort lautet: ", frage["Antwort"])
+
+        # Zwischenstand
+        if ist_zweier:
+            
+            print(name1 + ": " + str(punkte1) + " | " + name2 + ": " + str(punkte2))
+        else:
+            print(name1 + ": " + str(punkte1))
+
+    # ------------------------
+    # ENDERGEBNIS
+    # ------------------------
+
+    print("\n===== ERGEBNIS =====")
+
+    if ist_zweier:
+        print(name1 + ": " + str(punkte1))
+        print(name2 + ": " + str(punkte2))
+
+        if punkte1 > punkte2:
+            print(name1 + " gewinnt!")
+        elif punkte2 > punkte1:
+            print(name2 + " gewinnt!")
+        else:
+            print("Unentschieden!")
+    else:
+        print(name1 + " hat " + str(punkte1) + " Punkte")
+
+        
+        # MOTIVATION
+        
+
+        if punkte1 == 10:
+            print("\nDu scheinst ein richtiger Experte zu sein! Schaffst du das auch ein zweites Mal?")
+        elif punkte1== 9:
+            print("\nDas war knapp!Schaffst du beim nächsten Mal die volle Punktzahl?")
+        elif punkte1== 8:
+            print("\nDie zwei Punkte kriegst du noch! Versuch es ein weiteres Mal!")
+        elif punkte1 == 7:
+            print("\nNur durch erneutes Versuchen kannst du es schaffen!")
+        elif punkte1 ==6:
+            print("\nBeim nächsten mal klappt es bestimmt!")
+        elif punkte1 == 5:
+            print("\nSchön mittig! Aber schaffst du die 5 auch mal 2?")
+        elif punkte1 == 4:
+            print("\nLass deinen Kopf nicht hängen und versuch es erneut!")
+        elif punkte1 == 3:
+            print("\nBeim nächsten mal schaffst du es bestimmt!")
+        elif punkte1 == 2:
+            print("\nGlaub an dich und versuche es nochmal!")
+        elif punkte1 == 1:
+            print("\nZumindest 1 Punkt. Schaffst du aber auch 2?")
+        elif punkte1 == 0:
+            print("\nMacht nichts, versuch es erneut!")
+
+        # Verbesserung Vergleich
+        if letzte_punkte is not None:
+            if punkte1 > letzte_punkte:
+                print("Besser als letzte Runde!")
+            elif punkte1 < letzte_punkte:
+                print("Diesmal etwas schlechter.")
+            else:
+                print("Gleich geblieben!")
+
+        letzte_punkte = punkte1
+
+    # NOCHMAL SPIELEN
+
+    nochmal_spielen = input("\nNochmal spielen? (ja/nein): ").lower().strip()
+
